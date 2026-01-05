@@ -27,63 +27,13 @@ def main() -> None:
         data = json.load(f)
 
     system_prompt = data["shared_system_prompt"]
+    tools_schema = data["tools"]
     scenarios = data["scenarios"]
 
     if scenario_num < 1 or scenario_num > len(scenarios):
         sys.exit("Invalid scenario number")
 
     task_prompt = scenarios[scenario_num - 1]["task_prompt"]
-
-    tools_schema = [
-        {
-            "type": "function",
-            "function": {
-                "name": "take_screenshot",
-                "description": "Capture screen and return current view with cursor visible.",
-                "parameters": {"type": "object", "properties": {}, "required": []},
-            },
-        },
-        {
-            "type": "function",
-            "function": {
-                "name": "move_mouse",
-                "description": "Move mouse using normalized coordinates 0..1000 relative to the screenshot.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {"x": {"type": "number"}, "y": {"type": "number"}},
-                    "required": ["x", "y"],
-                },
-            },
-        },
-        {
-            "type": "function",
-            "function": {
-                "name": "click_mouse",
-                "description": "Left click at current cursor position.",
-                "parameters": {"type": "object", "properties": {}, "required": []},
-            },
-        },
-        {
-            "type": "function",
-            "function": {
-                "name": "type_text",
-                "description": "Type text into the focused control.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {"text": {"type": "string"}},
-                    "required": ["text"],
-                },
-            },
-        },
-        {
-            "type": "function",
-            "function": {
-                "name": "scroll_down",
-                "description": "Scroll down by one notch.",
-                "parameters": {"type": "object", "properties": {}, "required": []},
-            },
-        },
-    ]
 
     cfg = {
         "endpoint": "http://localhost:1234/v1/chat/completions",
@@ -96,8 +46,7 @@ def main() -> None:
         "dump_dir": "dumps",
         "dump_prefix": "screen_",
         "dump_start": 1,
-        "keep_last_screenshots": 1,
-        "max_steps": 50,
+        "max_steps": 15,
         "step_delay": 0.4,
     }
 
