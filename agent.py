@@ -19,23 +19,25 @@ def post_to_lm(payload: Dict[str, Any], endpoint: str, timeout: int) -> Dict[str
         return json.loads(resp.read().decode("utf-8"))
 
 
-def prune_old_screenshots(
-    messages: List[Dict[str, Any]], keep_last: int
-) -> List[Dict[str, Any]]:
-    if keep_last <= 0:
-        return [
-            m
-            for m in messages
-            if not (m.get("role") == "user" and isinstance(m.get("content"), list))
-        ]
-    idxs = [
-        i
-        for i, m in enumerate(messages)
-        if m.get("role") == "user" and isinstance(m.get("content"), list)
-    ]
-    if len(idxs) <= keep_last:
+def prune_old_screenshots(messages: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    pairs = []
+    i = 0
+    while i < len(messages):
+        if (i + 1 < len(messages) and
+            messages[i].get("role") == "tool" and
+            messages[i].get("name") == "take_screenshot" and
+            messages[i + 1].get("role") == "user" and
+            isinstance(messages[i + 1].get("content"), list)):
+            pairs.append((i, i + 1))
+            i += 2
+        else:
+            i += 1
+    if len(pairs) <= 1:
         return messages
-    drop = set(idxs[:-keep_last])
+    drop = set()
+    for tool_idx, user_idx in pairs[:-1]:
+        drop.add(tool_idx)
+        drop.add(user_idx)
     return [m for i, m in enumerate(messages) if i not in drop]
 
 
@@ -55,7 +57,6 @@ def run_agent(
     dump_dir = cfg["dump_dir"]
     dump_prefix = cfg["dump_prefix"]
     dump_start = cfg["dump_start"]
-    keep_last_screenshots = cfg["keep_last_screenshots"]
     max_steps = cfg["max_steps"]
     step_delay = cfg["step_delay"]
 
@@ -122,7 +123,7 @@ def run_agent(
                         f.write(png_bytes)
                     dump_idx += 1
 
-                    content = "Screenshot image captured."
+                    content = "Screenshot captured."
                     b64 = base64.b64encode(png_bytes).decode("ascii")
 
                     messages.append(
@@ -137,7 +138,7 @@ def run_agent(
                         {
                             "role": "user",
                             "content": [
-                                {"type": "text", "text": "captured image data"},
+                                {"type": "text", "text": "Current screen:"},
                                 {
                                     "type": "image_url",
                                     "image_url": {
@@ -147,9 +148,7 @@ def run_agent(
                             ],
                         }
                     )
-                    messages = prune_old_screenshots(
-                        messages, keep_last_screenshots
-                    )
+                    messages = prune_old_screenshots(messages)
 
                 elif name == "move_mouse":
                     args = json.loads(arg_str)
@@ -159,24 +158,24 @@ def run_agent(
                     yn = max(0.0, min(1000.0, yn))
                     winapi.move_mouse_norm(xn, yn)
                     time.sleep(0.06)
-                    content = "Mouse device position changed."
+                    content = f"Cursor moved to ({xn:.0f}, {yn:.0f})."
 
                 elif name == "click_mouse":
                     winapi.click_mouse()
                     time.sleep(0.06)
-                    content = "Left mouse button clicked."
+                    content = "Mouse clicked."
 
                 elif name == "type_text":
                     args = json.loads(arg_str)
                     text = str(args["text"])
                     winapi.type_text(text)
                     time.sleep(0.06)
-                    content = "Keyboard was used to type text."
+                    content = f"Typed: {text}"
 
                 elif name == "scroll_down":
                     winapi.scroll_down()
                     time.sleep(0.06)
-                    content = "Mouse wheel action completed."
+                    content = "Scrolled down."
 
                 else:
                     content = "error: unknown_tool"
