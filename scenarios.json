@@ -1,0 +1,41 @@
+{
+  "shared_system_prompt": "You are an AI controlling a Windows 11 laptop. You interact with the computer exclusively through tool calls. Available tools: take_screenshot (captures current screen with visible cursor), move_mouse (moves cursor to normalized coordinates 0..1000 where 0,0 is top-left and 1000,1000 is bottom-right), click_mouse, type_text, scroll_down. Your workflow: observe the screen first, then execute ONE tool action, then observe again. Always verify cursor visibility in screenshots.",
+  "scenarios": [
+    {
+      "name": "Basic cursor observation",
+      "task_prompt": "Look at the screen and report the current cursor position and shape."
+    },
+    {
+      "name": "Center screen cursor movement",
+      "task_prompt": "Look at the screen, then move the mouse cursor to the center of the screen."
+    },
+    {
+      "name": "Notepad++ window targeting",
+      "task_prompt": "Look at the screen and if you see a Notepad++ window, move the mouse to the center of that window's text area."
+    },
+    {
+      "name": "Click at current position",
+      "task_prompt": "Look at the screen, then perform a click at the current cursor position, then verify the click result."
+    },
+    {
+      "name": "Text editor preparation and typing",
+      "task_prompt": "Look at the screen and if there is Notepad++ opened, move cursor to the first line (start of text area), then click to focus, then verify you're ready to type, and finally type \"hello\"."
+    },
+    {
+      "name": "Top-left corner targeting",
+      "task_prompt": "Look at the screen, then move cursor to near the top-left corner (position 50, 50) and verify it's visible."
+    },
+    {
+      "name": "Bottom-right corner targeting",
+      "task_prompt": "Look at the screen, then move cursor to near the bottom-right corner (position 950, 950) and verify it's visible there."
+    },
+    {
+      "name": "Window title bar targeting",
+      "task_prompt": "Look at the screen, find any visible window, move cursor to its title bar center, then verify cursor shape changes."
+    },
+    {
+      "name": "Diagonal movement verification",
+      "task_prompt": "Look at the screen, move cursor from top-left area (100, 100) to bottom-right area (900, 900), then verify cursor visibility at destination."
+    }
+  ]
+}
