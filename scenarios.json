@@ -1,5 +1,62 @@
 {
-  "shared_system_prompt": "You are an AI controlling a Windows 11 laptop. You interact with the computer exclusively through tool calls. Available tools: take_screenshot (captures current screen with visible cursor), move_mouse (moves cursor to normalized coordinates 0..1000 where 0,0 is top-left and 1000,1000 is bottom-right), click_mouse, type_text, scroll_down. Your workflow: observe the screen first, then execute ONE tool action, then observe again. Always verify cursor visibility in screenshots.",
+  "shared_system_prompt": "You are an AI controlling a Windows 11 laptop through tool calls.\\n\\nAvailable tools:\\n- take_screenshot: Captures current screen with cursor visible\\n- move_mouse: Moves cursor using coordinates 0-1000 (0,0=top-left, 500,500=center, 1000,1000=bottom-right)\\n- click_mouse: Clicks at current cursor position\\n- type_text: Types text into focused control\\n- scroll_down: Scrolls down one notch\\n\\nWorkflow:\\n1. Take screenshot to see current state\\n2. Execute ONE action\\n3. Take another screenshot if you need to verify or continue\\n4. Respond with confirmation when task complete\\n\\nAlways check cursor visibility after moving it.",
+  
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "take_screenshot",
+        "description": "Captures current screen with cursor visible. Use this to observe before acting or verify after acting.",
+        "parameters": {"type": "object", "properties": {}, "required": []}
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "move_mouse",
+        "description": "Moves cursor to specified position using normalized coordinates where 0,0 is top-left corner, 1000,1000 is bottom-right corner, and 500,500 is center.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "x": {"type": "number", "description": "Horizontal position (0-1000)"},
+            "y": {"type": "number", "description": "Vertical position (0-1000)"}
+          },
+          "required": ["x", "y"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "click_mouse",
+        "description": "Clicks left mouse button at current cursor position.",
+        "parameters": {"type": "object", "properties": {}, "required": []}
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "type_text",
+        "description": "Types text into currently focused control. Click to focus first if needed.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "text": {"type": "string", "description": "Text to type"}
+          },
+          "required": ["text"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "scroll_down",
+        "description": "Scrolls down one notch at current cursor position.",
+        "parameters": {"type": "object", "properties": {}, "required": []}
+      }
+    }
+  ],
+  
   "scenarios": [
     {
       "name": "Basic cursor observation",
@@ -11,31 +68,31 @@
     },
     {
       "name": "Notepad++ window targeting",
-      "task_prompt": "Look at the screen and if you see a Notepad++ window, move the mouse to the center of that window's text area."
+      "task_prompt": "Look at the screen and if you see a Notepad++ window, move the mouse to the center of its text area."
     },
     {
       "name": "Click at current position",
-      "task_prompt": "Look at the screen, then perform a click at the current cursor position, then verify the click result."
+      "task_prompt": "Look at the screen, then perform a click at the current cursor position, then verify the result."
     },
     {
       "name": "Text editor preparation and typing",
-      "task_prompt": "Look at the screen and if there is Notepad++ opened, move cursor to the first line (start of text area), then click to focus, then verify you're ready to type, and finally type \"hello\"."
+      "task_prompt": "Look at the screen. If Notepad++ is open, click on the first line of text area to focus it, then type 'hello'."
     },
     {
       "name": "Top-left corner targeting",
-      "task_prompt": "Look at the screen, then move cursor to near the top-left corner (position 50, 50) and verify it's visible."
+      "task_prompt": "Look at the screen, then move cursor to the top-left area and verify it's visible."
     },
     {
       "name": "Bottom-right corner targeting",
-      "task_prompt": "Look at the screen, then move cursor to near the bottom-right corner (position 950, 950) and verify it's visible there."
+      "task_prompt": "Look at the screen, then move cursor to the bottom-right area and verify it's visible."
     },
     {
       "name": "Window title bar targeting",
-      "task_prompt": "Look at the screen, find any visible window, move cursor to its title bar center, then verify cursor shape changes."
+      "task_prompt": "Look at the screen, find any visible window, move cursor to the center of its title bar, then verify position."
     },
     {
       "name": "Diagonal movement verification",
-      "task_prompt": "Look at the screen, move cursor from top-left area (100, 100) to bottom-right area (900, 900), then verify cursor visibility at destination."
+      "task_prompt": "Look at the screen, move cursor from top-left area to bottom-right area, then verify cursor visibility."
     }
   ]
 }
