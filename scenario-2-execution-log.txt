@@ -1,10 +1,6 @@
-My (human) observation:
-Mouse was properly moved to the center of the screen and the system finished its work, however, the mouse was hidden.
-I mean I saw the cursor only after I have moved my mouse a little, then I saw the mouse cursor appeared in the exact center of the screen.
-ISSUE: why it was hidden? Is the move mouse code has some flaw that makes the mouse to move but hides it?
 
 ================================================================================
-[2026-01-05 20:20:18] REQUEST TO MODEL:
+[2026-01-05 21:23:35] REQUEST TO MODEL:
 ================================================================================
 {
   "model": "qwen/qwen3-vl-2b-instruct",
@@ -102,12 +98,12 @@ ISSUE: why it was hidden? Is the move mouse code has some flaw that makes the mo
 }
 
 ================================================================================
-[2026-01-05 20:20:21] RESPONSE FROM MODEL:
+[2026-01-05 21:23:36] RESPONSE FROM MODEL:
 ================================================================================
 {
-  "id": "chatcmpl-mpktjca3i6beegd7l8kgd",
+  "id": "chatcmpl-92ppx6x8vkoex9th0g9956",
   "object": "chat.completion",
-  "created": 1767640818,
+  "created": 1767644615,
   "model": "qwen3-vl-2b-instruct",
   "choices": [
     {
@@ -115,10 +111,11 @@ ISSUE: why it was hidden? Is the move mouse code has some flaw that makes the mo
       "message": {
         "role": "assistant",
         "content": "",
+        "reasoning_content": "",
         "tool_calls": [
           {
             "type": "function",
-            "id": "140233757",
+            "id": "821411110",
             "function": {
               "name": "take_screenshot",
               "arguments": "{}"
@@ -140,7 +137,7 @@ ISSUE: why it was hidden? Is the move mouse code has some flaw that makes the mo
 }
 
 ================================================================================
-[2026-01-05 20:20:24] REQUEST TO MODEL:
+[2026-01-05 21:23:39] REQUEST TO MODEL:
 ================================================================================
 {
   "model": "qwen/qwen3-vl-2b-instruct",
@@ -156,10 +153,11 @@ ISSUE: why it was hidden? Is the move mouse code has some flaw that makes the mo
     {
       "role": "assistant",
       "content": "",
+      "reasoning_content": "",
       "tool_calls": [
         {
           "type": "function",
-          "id": "140233757",
+          "id": "821411110",
           "function": {
             "name": "take_screenshot",
             "arguments": "{}"
@@ -169,7 +167,7 @@ ISSUE: why it was hidden? Is the move mouse code has some flaw that makes the mo
     },
     {
       "role": "tool",
-      "tool_call_id": "140233757",
+      "tool_call_id": "821411110",
       "name": "take_screenshot",
       "content": "Screenshot image captured."
     },
@@ -273,12 +271,12 @@ ISSUE: why it was hidden? Is the move mouse code has some flaw that makes the mo
 }
 
 ================================================================================
-[2026-01-05 20:21:33] RESPONSE FROM MODEL:
+[2026-01-05 21:24:45] RESPONSE FROM MODEL:
 ================================================================================
 {
-  "id": "chatcmpl-10fmxucyacq16f2lvqdyl9",
+  "id": "chatcmpl-nt2rmhrzer9qrnacz4srw",
   "object": "chat.completion",
-  "created": 1767640824,
+  "created": 1767644619,
   "model": "qwen3-vl-2b-instruct",
   "choices": [
     {
@@ -286,10 +284,11 @@ ISSUE: why it was hidden? Is the move mouse code has some flaw that makes the mo
       "message": {
         "role": "assistant",
         "content": "",
+        "reasoning_content": "",
         "tool_calls": [
           {
             "type": "function",
-            "id": "698329768",
+            "id": "645156144",
             "function": {
               "name": "move_mouse",
               "arguments": "{\"x\":500,\"y\":500}"
@@ -311,7 +310,7 @@ ISSUE: why it was hidden? Is the move mouse code has some flaw that makes the mo
 }
 
 ================================================================================
-[2026-01-05 20:21:36] REQUEST TO MODEL:
+[2026-01-05 21:24:48] REQUEST TO MODEL:
 ================================================================================
 {
   "model": "qwen/qwen3-vl-2b-instruct",
@@ -327,10 +326,11 @@ ISSUE: why it was hidden? Is the move mouse code has some flaw that makes the mo
     {
       "role": "assistant",
       "content": "",
+      "reasoning_content": "",
       "tool_calls": [
         {
           "type": "function",
-          "id": "140233757",
+          "id": "821411110",
           "function": {
             "name": "take_screenshot",
             "arguments": "{}"
@@ -340,7 +340,7 @@ ISSUE: why it was hidden? Is the move mouse code has some flaw that makes the mo
     },
     {
       "role": "tool",
-      "tool_call_id": "140233757",
+      "tool_call_id": "821411110",
       "name": "take_screenshot",
       "content": "Screenshot image captured."
     },
@@ -362,10 +362,11 @@ ISSUE: why it was hidden? Is the move mouse code has some flaw that makes the mo
     {
       "role": "assistant",
       "content": "",
+      "reasoning_content": "",
       "tool_calls": [
         {
           "type": "function",
-          "id": "698329768",
+          "id": "645156144",
           "function": {
             "name": "move_mouse",
             "arguments": "{\"x\":500,\"y\":500}"
@@ -375,7 +376,7 @@ ISSUE: why it was hidden? Is the move mouse code has some flaw that makes the mo
     },
     {
       "role": "tool",
-      "tool_call_id": "698329768",
+      "tool_call_id": "645156144",
       "name": "move_mouse",
       "content": "Mouse device position changed."
     }
@@ -464,12 +465,12 @@ ISSUE: why it was hidden? Is the move mouse code has some flaw that makes the mo
 }
 
 ================================================================================
-[2026-01-05 20:21:37] RESPONSE FROM MODEL:
+[2026-01-05 21:24:49] RESPONSE FROM MODEL:
 ================================================================================
 {
-  "id": "chatcmpl-m9ekoleq2v1wjj8htr4j4",
+  "id": "chatcmpl-nnncl7xg3q0349zz2ckeln",
   "object": "chat.completion",
-  "created": 1767640896,
+  "created": 1767644688,
   "model": "qwen3-vl-2b-instruct",
   "choices": [
     {
@@ -477,6 +478,7 @@ ISSUE: why it was hidden? Is the move mouse code has some flaw that makes the mo
       "message": {
         "role": "assistant",
         "content": "I have moved the mouse cursor to the center of the screen.",
+        "reasoning_content": "",
         "tool_calls": []
       },
       "logprobs": null,
